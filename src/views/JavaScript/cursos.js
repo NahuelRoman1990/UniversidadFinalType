@@ -24,9 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function validarCurso(nombre, descripcion, profesor_id) {
-  const nombreVal = /^[a-zA-Z0-9\s]{3,50}$/; //solo letras, números y espacios, entre 3 y 50 caracteres
-  const descripcionVal = /^.{5,200}$/; //cualquier carácter, mínimo 5 y máximo 200 caracteres
-  const profesor_idVal = /^\d+$/; //solo números enteros positivos
+  const nombreVal = /^[a-zA-ZÑñ0-9\s]{3,50}$/;
+  const descripcionVal = /^.{5,200}$/; 
+  const profesor_idVal = /^\d+$/; 
 
   if (!nombreVal.test(nombre) && !descripcionVal.test(descripcion)) {
     Swal.fire({
@@ -155,8 +155,6 @@ async function agregarCurso(curso) {
     }
   }
   
-
-/**** ELIMINAR CURSO ****/
 async function eliminarCurso(id) {
   Swal.fire({
     title: "¿Está seguro?",
@@ -198,18 +196,16 @@ async function eliminarCurso(id) {
   });
 }
 
-/**** MODIFICAR CURSO ****/
+
 async function mostrarFormularioModificar(id) {
   try {
     const response = await fetch(`http://localhost:3000/cursos/${id}`);
     const curso = await response.json();
 
-    // Llenar los campos del formulario con los datos actuales del curso
     document.getElementById("modificar-id").value = curso.id;
     document.getElementById("modificar-nombre").value = curso.nombre;
     document.getElementById("modificar-descripcion").value = curso.descripcion;
 
-    // Obtener lista de profesores para el formulario de modificar
     const profesoresResponse = await fetch("http://localhost:3000/profesores");
     const profesores = await profesoresResponse.json();
     const selectProfesorModificar =
@@ -217,7 +213,6 @@ async function mostrarFormularioModificar(id) {
 
     selectProfesorModificar.innerHTML = "";
 
-    // Poblar el select con los profesores y seleccionar el que corresponde al curso
     profesores.forEach((profesor) => {
       const option = document.createElement("option");
       option.value = profesor.id;
@@ -228,26 +223,23 @@ async function mostrarFormularioModificar(id) {
       selectProfesorModificar.appendChild(option);
     });
 
-    // Mostrar el modal de modificar
+
     document.getElementById("modal-modificar").style.display = "block";
   } catch (error) {
     console.error("Error al cargar los datos del curso:", error);
   }
 }
 
-// Manejar la modificación de un curso
 document
   .getElementById("form-modificar")
   .addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    // Obtener los nuevos valores del formulario de modificación
     const id = document.getElementById("modificar-id").value;
     const nombre = document.getElementById("modificar-nombre").value;
     const descripcion = document.getElementById("modificar-descripcion").value;
     const profesor_id = document.getElementById("modificar-profesor").value;
 
-    // Validar los campos del formulario de modificación
     const validacionExitosa = validarCurso(nombre, descripcion, profesor_id);
     if (!validacionExitosa) {
       return;
@@ -257,7 +249,6 @@ document
     }
   });
 
-// Enviar la solicitud de modificación del curso al servidor
 async function modificarCurso(id, cursoModificado) {
   try {
     const response = await fetch(`http://localhost:3000/cursos/${id}`, {
@@ -288,7 +279,6 @@ async function modificarCurso(id, cursoModificado) {
   }
 }
 
-// Cerrar el pop up cuando el usuario hace clic fuera
 window.onclick = function (event) {
   const modal = document.getElementById("modal-modificar");
   if (event.target === modal) {
@@ -296,7 +286,6 @@ window.onclick = function (event) {
   }
 };
 
-// Cerrar el pop up cuando el usuario haga clic en la 'X'
 document.querySelector(".close").onclick = function () {
   document.getElementById("modal-modificar").style.display = "none";
 };

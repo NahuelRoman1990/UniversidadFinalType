@@ -189,28 +189,23 @@ async function eliminarEstudiante(id) {
   });
 }
 
-/**** MODIFICAR ESTUDIANTE ****/
-//mostrar formulario
 async function mostrarFormularioModificar(id) {
   try {
     const response = await fetch(`http://localhost:3000/estudiantes/${id}`);
     const estudiante = await response.json();
 
-    // Rellenar los campos del pop up
     document.getElementById("modificar-id").value = estudiante.id;
     document.getElementById("modificar-dni").value = estudiante.dni;
     document.getElementById("modificar-nombre").value = estudiante.nombre;
     document.getElementById("modificar-apellido").value = estudiante.apellido;
     document.getElementById("modificar-email").value = estudiante.email;
 
-    // Abrir el pop up
     document.getElementById("modal-modificar").style.display = "block";
   } catch (error) {
     console.error("Error al obtener estudiante:", error);
   }
 }
 
-// Manejar la modificación de un estudiante
 document
   .getElementById("form-modificar")
   .addEventListener("submit", async function (event) {
@@ -231,7 +226,7 @@ document
     await modificarEstudiante(id, estudianteModificado);
   });
 
-// Modificar el estudiante
+
 async function modificarEstudiante(id, estudianteModificado) {
   try {
     const response = await fetch(`http://localhost:3000/estudiantes/${id}`, {
@@ -262,7 +257,6 @@ async function modificarEstudiante(id, estudianteModificado) {
   }
 }
 
-// Cerrar el pop up cuando el usuario haga clic fuera
 window.onclick = function (event) {
   const modal = document.getElementById("modal-modificar");
   if (event.target === modal) {
@@ -270,7 +264,6 @@ window.onclick = function (event) {
   }
 };
 
-// Cerrar el pop up cuando el usuario haga clic en la 'X'
 document.querySelector(".close").onclick = function () {
   document.getElementById("modal-modificar").style.display = "none";
 };

@@ -1,5 +1,3 @@
-// Async function to fetch estudiantes from the backend
-// Función para obtener estudiantes
 async function obtenerEstudiantes() {
   try {
     const response = await fetch("http://localhost:3000/estudiantes");
@@ -19,7 +17,6 @@ async function obtenerEstudiantes() {
   }
 }
 
-// Función para obtener cursos
 async function obtenerCursos() {
   try {
     const response = await fetch("http://localhost:3000/cursos");
@@ -39,20 +36,17 @@ async function obtenerCursos() {
   }
 }
 
-// Evento que se ejecuta cuando el DOM está completamente cargado
 document.addEventListener("DOMContentLoaded", () => {
   obtenerEstudiantes();
   obtenerCursos();
 });
 
-// Función para inscribir estudiante
 document.getElementById("form-inscripcion").addEventListener("submit", async function (event) {
   event.preventDefault();
   const estudiante = document.getElementById("estudiante").value;
   const curso = document.getElementById("curso").value;
   const nota = document.getElementById("nota").value || 0; // Usa 0 si no se especifica nota
 
-  // Aquí deberías enviar la inscripción al backend
   try {
     const response = await fetch("http://localhost:3000/inscripciones", {
       method: "POST",
@@ -64,7 +58,7 @@ document.getElementById("form-inscripcion").addEventListener("submit", async fun
 
     if (response.ok) {
       Swal.fire(`Inscrito ${estudiante} en ${curso} con nota ${nota}`);
-      this.reset(); // Reiniciar el formulario
+      this.reset();
     } else {
       Swal.fire("Error al inscribir al estudiante");
     }
@@ -74,10 +68,8 @@ document.getElementById("form-inscripcion").addEventListener("submit", async fun
   }
 });
 
-// Función para consultar inscripciones por curso
 document.getElementById("consultar-curso-btn").addEventListener("click", async function () {
-  const cursoSeleccionado = document.getElementById("curso-consulta").value; // Asegúrate de que el ID coincida
-  if (!cursoSeleccionado) {
+  const cursoSeleccionado = document.getElementById("curso-consulta").value; 
     Swal.fire("Por favor, selecciona un curso.");
     return;
   }
@@ -93,7 +85,7 @@ document.getElementById("consultar-curso-btn").addEventListener("click", async f
   }
 });
 
-// Función para consultar cursos por estudiante
+
 document.getElementById("consultar-estudiante-btn").addEventListener("click", async function () {
   const estudianteSeleccionado = document.getElementById("estudiante-consulta").value; // Asegúrate de que el ID coincida
   if (!estudianteSeleccionado) {
@@ -112,10 +104,10 @@ document.getElementById("consultar-estudiante-btn").addEventListener("click", as
   }
 });
 
-// Función para mostrar inscripciones en la tabla
+
 function mostrarInscripciones(inscripciones) {
   const tablaInscripciones = document.getElementById("tabla-inscripciones");
-  tablaInscripciones.innerHTML = ""; // Limpiar tabla
+  tablaInscripciones.innerHTML = "";
   inscripciones.forEach((inscripcion) => {
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -127,10 +119,10 @@ function mostrarInscripciones(inscripciones) {
   });
 }
 
-// Función para mostrar cursos en la tabla
+
 function mostrarCursos(cursos) {
   const tablaCursos = document.getElementById("tabla-cursos");
-  tablaCursos.innerHTML = ""; // Limpiar tabla
+  tablaCursos.innerHTML = ""; 
   cursos.forEach((curso) => {
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -141,6 +133,5 @@ function mostrarCursos(cursos) {
   });
 }
 
-// Llamar a las funciones al cargar la página
 obtenerEstudiantes();
 obtenerCursos();
