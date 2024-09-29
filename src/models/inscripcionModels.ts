@@ -13,7 +13,7 @@ export class Inscripcion {
   @Column({ type: "int", nullable: true })
   nota!: number | null;
 
-  @Column({ type: "date", default: () => `NOW()` })
+  @Column({ type: "date", default: () => "NOW()" }) 
   fecha!: Date;
 
   @ManyToOne(() => Curso, (curso) => curso.estudiantes)

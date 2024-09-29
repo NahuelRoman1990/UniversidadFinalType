@@ -4,12 +4,10 @@ import { Inscripcion } from "../models/inscripcionModels";
 import { Estudiante } from "../models/estudianteModels";
 import { Curso } from "../models/cursoModels";
 
-// Repositorios
 const inscripcionRepo = AppDataSource.getRepository(Inscripcion);
 const estudianteRepo = AppDataSource.getRepository(Estudiante);
 const cursoRepo = AppDataSource.getRepository(Curso);
 
-/**** INSCRIBIR ALUMNO A CURSO ****/
 export const insertarInscripcion = async (
   req: Request,
   res: Response
@@ -17,6 +15,7 @@ export const insertarInscripcion = async (
   try {
     const { curso_id, estudiante_id, nota } = req.body;
 
+    // Verificar existencia del estudiante
     const estudianteEncontrado: Estudiante | null =
       await estudianteRepo.findOneBy({
         id: parseInt(estudiante_id),
@@ -25,6 +24,7 @@ export const insertarInscripcion = async (
       return res.status(404).json("Estudiante no encontrado");
     }
 
+    // Verificar existencia del curso
     const cursoEncontrado: Curso | null = await cursoRepo.findOneBy({
       id: parseInt(curso_id),
     });
@@ -32,6 +32,7 @@ export const insertarInscripcion = async (
       return res.status(404).json("Curso no encontrado");
     }
 
+    // Verificar si el estudiante ya está inscrito
     const inscripcionExistente = await inscripcionRepo.findOne({
       where: {
         curso_id: cursoEncontrado.id,
@@ -44,6 +45,7 @@ export const insertarInscripcion = async (
       });
     }
 
+    // Crear nueva inscripción
     const inscripcion: Inscripcion = inscripcionRepo.create({
       estudiante: estudianteEncontrado,
       curso: cursoEncontrado,
@@ -59,7 +61,6 @@ export const insertarInscripcion = async (
   }
 };
 
-/**** CONSULTAR INSCRIPCIONES (Listado general) ****/
 export const consultarInscripciones = async (
   req: Request,
   res: Response
@@ -80,7 +81,6 @@ export const consultarInscripciones = async (
   }
 };
 
-/**** CONSULTAR INSCRIPCIONES POR CURSO (que alumnos tiene X curso?)****/
 export const consultarInscripcionesPorCurso = async (
   req: Request,
   res: Response
@@ -101,7 +101,6 @@ export const consultarInscripcionesPorCurso = async (
   }
 };
 
-/**** CONSULTAR INSCRIPCIONES POR ESTUDIANTE (que cursos hace X estudiante)****/
 export const consultarInscripcionesPorEstudiante = async (
   req: Request,
   res: Response
@@ -124,7 +123,6 @@ export const consultarInscripcionesPorEstudiante = async (
   }
 };
 
-/**** CONSULTAR NOTA ****/
 export const consultarNota = async (
   req: Request,
   res: Response
@@ -133,7 +131,6 @@ export const consultarNota = async (
     const cursoElegido: number = parseInt(req.params.curso_id);
     const estudianteElegido: number = parseInt(req.params.estudiante_id);
 
-    // Validar que los parámetros sean números válidos
     if (isNaN(cursoElegido) || isNaN(estudianteElegido)) {
       return res.status(400).json("ID de curso o estudiante inválido");
     }
@@ -158,7 +155,6 @@ export const consultarNota = async (
   }
 };
 
-/**** MODIFICAR NOTA ****/
 export const modificarNota = async (
   req: Request,
   res: Response
@@ -188,7 +184,6 @@ export const modificarNota = async (
   }
 };
 
-/**** ELIMINAR INSCRIPCIÓN ****/
 export const eliminarInscripcion = async (
   req: Request,
   res: Response
@@ -196,22 +191,21 @@ export const eliminarInscripcion = async (
   try {
     const cursoElegido: number = parseInt(req.params.curso_id);
     const estudianteElegido: number = parseInt(req.params.estudiante_id);
-    const inscripcion: Inscripcion | null = await inscripcionRepo.findOne({
+
+    const inscripcion = await inscripcionRepo.findOne({
       where: {
         curso: { id: cursoElegido },
         estudiante: { id: estudianteElegido },
       },
-      relations: ["curso", "estudiante"],
     });
     if (!inscripcion) {
       return res.status(404).json("Inscripción no encontrada");
     }
-
     await inscripcionRepo.remove(inscripcion);
-    return res.status(200).json("Inscripción eliminada");
+    return res.status(204).json("Inscripción eliminada");
   } catch (error: any) {
     return res.status(500).json({
-      message: "Error en catch al eliminar la inscripción",
+      message: "Error en catch al eliminar inscripción",
       error: error.message,
     });
   }

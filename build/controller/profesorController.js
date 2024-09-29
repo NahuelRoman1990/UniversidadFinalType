@@ -13,7 +13,6 @@ exports.eliminarProfesor = exports.modificarProfesor = exports.consultarUnProfes
 const conexion_1 = require("../db/conexion");
 const profesorModels_1 = require("../models/profesorModels");
 const profesorRepo = conexion_1.AppDataSource.getRepository(profesorModels_1.Profesor);
-/**** INSERTAR PROFESOR ****/
 const insertarProfesor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const existeProfe = yield profesorRepo.findOneBy({
@@ -33,7 +32,6 @@ const insertarProfesor = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.insertarProfesor = insertarProfesor;
-/**** CONSULTAR PROFESORES ****/
 const consultarProfesores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const profesores = yield profesorRepo.find();
@@ -47,7 +45,6 @@ const consultarProfesores = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.consultarProfesores = consultarProfesores;
-/**** CONSULTAR UN PROFESOR ****/
 const consultarUnProfesor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const profesor = yield profesorRepo.findOneBy({
@@ -65,7 +62,6 @@ const consultarUnProfesor = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.consultarUnProfesor = consultarUnProfesor;
-/**** MODIFICAR PROFESOR ****/
 const modificarProfesor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const profesor = yield profesorRepo.findOneBy({
@@ -86,7 +82,6 @@ const modificarProfesor = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.modificarProfesor = modificarProfesor;
-/**** ELIMINAR PROFESOR ****/
 const eliminarProfesor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const profesor = yield profesorRepo.findOneBy({

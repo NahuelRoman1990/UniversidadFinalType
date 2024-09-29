@@ -13,10 +13,8 @@ import { validarCampos } from "../middlewares/validarCampos";
 
 const routes = Router();
 
-// Consultar todas las inscripciones
 routes.get("/", consultarInscripciones);
 
-// Inscribir alumno en un curso
 routes.post(
   "/",
   [
@@ -34,13 +32,10 @@ routes.post(
   insertarInscripcion
 );
 
-// Consultar inscripciones por estudiante
 routes.get("/estudiante/:estudiante_id", consultarInscripcionesPorEstudiante);
 
-// Consultar inscripciones por curso
 routes.get("/curso/:curso_id", consultarInscripcionesPorCurso);
 
-// Consultar, modificar o eliminar una inscripción específica (por curso y estudiante)
 routes
   .route("/curso/:curso_id/estudiante/:estudiante_id")
   .get(consultarNota)

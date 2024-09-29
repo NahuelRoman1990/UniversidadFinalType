@@ -80,7 +80,7 @@ function validarEstudiante(dni, nombre, apellido, email) {
 }
 
 
-async function obtenerEstudiantes() {
+export async function obtenerEstudiantes() {
   try {
     const response = await fetch("http://localhost:3000/estudiantes", {
       method: "GET",

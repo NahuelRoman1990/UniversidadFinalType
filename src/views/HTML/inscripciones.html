@@ -32,7 +32,6 @@
                     <label for="estudiante">Estudiante:</label>
                     <select id="estudiante" required>
                         <option value="">Selecciona un estudiante</option>
-                        <!-- Las opciones se llenarán dinámicamente -->
                     </select>
                 </div>
 
@@ -40,7 +39,6 @@
                     <label for="curso">Curso:</label>
                     <select id="curso" required>
                         <option value="">Selecciona un curso</option>
-                        <!-- Las opciones se llenarán dinámicamente -->
                     </select>
                 </div>
 
@@ -71,7 +69,6 @@
                 <h3>Consultar alumnos por curso:</h3>
                 <select id="curso-consulta">
                     <option value="">Selecciona un curso</option>
-                    <!-- Las opciones se llenarán dinámicamente -->
                 </select>
                 <button id="consultar-curso-btn">Consultar por Curso</button>
             </div>
@@ -80,7 +77,6 @@
                 <h3>Consultar cursos por estudiante:</h3>
                 <select id="estudiante-consulta">
                     <option value="">Selecciona un estudiante</option>
-                    <!-- Las opciones se llenarán dinámicamente -->
                 </select>
                 <button id="consultar-estudiante-btn">Consultar por Estudiante</button>
             </div>
@@ -96,10 +92,10 @@
                         <th>CURSO</th>
                         <th>ESTUDIANTE</th>
                         <th>NOTA</th>
+                        <th>ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody id="tabla-inscripciones">
-                    <!-- Las inscripciones se llenarán dinámicamente -->
                 </tbody>
             </table>
         </section>
@@ -109,7 +105,8 @@
         <p>Universidad</p>
     </footer>
 
-    <script src="../JavaScript/inscripciones.js"></script>
+    <!-- Referencia al archivo JavaScript externo como módulo -->
+    <script type="module" src="../JavaScript/inscripciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

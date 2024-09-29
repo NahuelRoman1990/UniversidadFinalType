@@ -14,26 +14,27 @@ const conexion_1 = require("../db/conexion");
 const inscripcionModels_1 = require("../models/inscripcionModels");
 const estudianteModels_1 = require("../models/estudianteModels");
 const cursoModels_1 = require("../models/cursoModels");
-// Repositorios
 const inscripcionRepo = conexion_1.AppDataSource.getRepository(inscripcionModels_1.Inscripcion);
 const estudianteRepo = conexion_1.AppDataSource.getRepository(estudianteModels_1.Estudiante);
 const cursoRepo = conexion_1.AppDataSource.getRepository(cursoModels_1.Curso);
-/**** INSCRIBIR ALUMNO A CURSO ****/
 const insertarInscripcion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { curso_id, estudiante_id, nota } = req.body;
+        // Verificar existencia del estudiante
         const estudianteEncontrado = yield estudianteRepo.findOneBy({
             id: parseInt(estudiante_id),
         });
         if (!estudianteEncontrado) {
             return res.status(404).json("Estudiante no encontrado");
         }
+        // Verificar existencia del curso
         const cursoEncontrado = yield cursoRepo.findOneBy({
             id: parseInt(curso_id),
         });
         if (!cursoEncontrado) {
             return res.status(404).json("Curso no encontrado");
         }
+        // Verificar si el estudiante ya está inscrito
         const inscripcionExistente = yield inscripcionRepo.findOne({
             where: {
                 curso_id: cursoEncontrado.id,
@@ -45,6 +46,7 @@ const insertarInscripcion = (req, res) => __awaiter(void 0, void 0, void 0, func
                 message: "El estudiante ya está inscrito en este curso.",
             });
         }
+        // Crear nueva inscripción
         const inscripcion = inscripcionRepo.create({
             estudiante: estudianteEncontrado,
             curso: cursoEncontrado,
@@ -61,7 +63,6 @@ const insertarInscripcion = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.insertarInscripcion = insertarInscripcion;
-/**** CONSULTAR INSCRIPCIONES (Listado general) ****/
 const consultarInscripciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const inscripciones = yield inscripcionRepo.find({
@@ -80,7 +81,6 @@ const consultarInscripciones = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.consultarInscripciones = consultarInscripciones;
-/**** CONSULTAR INSCRIPCIONES POR CURSO (que alumnos tiene X curso?)****/
 const consultarInscripcionesPorCurso = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const inscripciones = yield inscripcionRepo.find({
@@ -99,7 +99,6 @@ const consultarInscripcionesPorCurso = (req, res) => __awaiter(void 0, void 0, v
     }
 });
 exports.consultarInscripcionesPorCurso = consultarInscripcionesPorCurso;
-/**** CONSULTAR INSCRIPCIONES POR ESTUDIANTE (que cursos hace X estudiante)****/
 const consultarInscripcionesPorEstudiante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const inscripciones = yield inscripcionRepo.find({
@@ -120,12 +119,10 @@ const consultarInscripcionesPorEstudiante = (req, res) => __awaiter(void 0, void
     }
 });
 exports.consultarInscripcionesPorEstudiante = consultarInscripcionesPorEstudiante;
-/**** CONSULTAR NOTA ****/
 const consultarNota = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const cursoElegido = parseInt(req.params.curso_id);
         const estudianteElegido = parseInt(req.params.estudiante_id);
-        // Validar que los parámetros sean números válidos
         if (isNaN(cursoElegido) || isNaN(estudianteElegido)) {
             return res.status(400).json("ID de curso o estudiante inválido");
         }
@@ -149,7 +146,6 @@ const consultarNota = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.consultarNota = consultarNota;
-/**** MODIFICAR NOTA ****/
 const modificarNota = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const cursoElegido = parseInt(req.params.curso_id);
@@ -176,7 +172,6 @@ const modificarNota = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.modificarNota = modificarNota;
-/**** ELIMINAR INSCRIPCIÓN ****/
 const eliminarInscripcion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const cursoElegido = parseInt(req.params.curso_id);
@@ -186,17 +181,16 @@ const eliminarInscripcion = (req, res) => __awaiter(void 0, void 0, void 0, func
                 curso: { id: cursoElegido },
                 estudiante: { id: estudianteElegido },
             },
-            relations: ["curso", "estudiante"],
         });
         if (!inscripcion) {
             return res.status(404).json("Inscripción no encontrada");
         }
         yield inscripcionRepo.remove(inscripcion);
-        return res.status(200).json("Inscripción eliminada");
+        return res.status(204).json("Inscripción eliminada");
     }
     catch (error) {
         return res.status(500).json({
-            message: "Error en catch al eliminar la inscripción",
+            message: "Error en catch al eliminar inscripción",
             error: error.message,
         });
     }

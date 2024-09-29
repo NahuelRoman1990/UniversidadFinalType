@@ -29,7 +29,7 @@ __decorate([
     __metadata("design:type", Object)
 ], Inscripcion.prototype, "nota", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "date", default: () => `NOW()` }),
+    (0, typeorm_1.Column)({ type: "date", default: () => "NOW()" }),
     __metadata("design:type", Date)
 ], Inscripcion.prototype, "fecha", void 0);
 __decorate([

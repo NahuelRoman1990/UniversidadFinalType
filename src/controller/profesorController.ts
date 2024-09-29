@@ -4,7 +4,6 @@ import { Profesor } from "../models/profesorModels";
 
 const profesorRepo = AppDataSource.getRepository(Profesor);
 
-/**** INSERTAR PROFESOR ****/
 export const insertarProfesor = async (
   req: Request,
   res: Response
@@ -26,7 +25,6 @@ export const insertarProfesor = async (
   }
 };
 
-/**** CONSULTAR PROFESORES ****/
 export const consultarProfesores = async (
   req: Request,
   res: Response
@@ -42,7 +40,6 @@ export const consultarProfesores = async (
   }
 };
 
-/**** CONSULTAR UN PROFESOR ****/
 export const consultarUnProfesor = async (
   req: Request,
   res: Response
@@ -62,7 +59,6 @@ export const consultarUnProfesor = async (
   }
 };
 
-/**** MODIFICAR PROFESOR ****/
 export const modificarProfesor = async (
   req: Request,
   res: Response
@@ -85,7 +81,6 @@ export const modificarProfesor = async (
   }
 };
 
-/**** ELIMINAR PROFESOR ****/
 export const eliminarProfesor = async (
   req: Request,
   res: Response

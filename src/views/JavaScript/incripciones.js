@@ -1,137 +1,421 @@
-async function obtenerEstudiantes() {
-  try {
-    const response = await fetch("http://localhost:3000/estudiantes");
-    if (!response.ok) throw new Error('Error en la red');
+document.getElementById("modal-modificar-nota").style.display = "none";
 
-    const estudiantes = await response.json();
-    const estudianteSelect = document.getElementById("estudiante");
+document.addEventListener("DOMContentLoaded", () => {
+  cargarCursosConsultas();
+  cargarEstudiantesConsultas();
+  cargarCursosInscribir();
+  cargarEstudiantesInscribir();
 
-    estudiantes.forEach((estudiante) => {
-      const option = document.createElement("option");
-      option.value = estudiante.id;
-      option.textContent = `${estudiante.nombre} ${estudiante.apellido}`;
-      estudianteSelect.appendChild(option);
+  document
+    .getElementById("form-inscripcion")
+    .addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+  
+      const estudiante_id = document.getElementById("estudiante").value;
+      const curso_id = document.getElementById("curso").value;
+      const nota = document.getElementById("nota").value;
+
+      const validacionExitosa = validarInscripcion(
+        estudiante_id,
+        curso_id,
+        nota
+      );
+      if (!validacionExitosa) {
+        return;
+      } else {
+        const inscripcion = {
+          estudiante_id,
+          curso_id,
+          nota: nota ? nota : null,
+        };
+        await inscribirEstudiante(inscripcion);
+        document.getElementById("form-inscripcion").reset();
+      }
     });
+
+
+  const botonConsultarTodas = document.getElementById("consultar-todas");
+  botonConsultarTodas.addEventListener("click", obtenerInscripciones);
+
+  document
+    .getElementById("form-consultar-curso")
+    .addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const curso_id = document.getElementById("consulta-curso").value;
+      await obtenerInscripcionesPorCurso(curso_id);
+    });
+
+ 
+  document
+    .getElementById("form-consultar-estudiante")
+    .addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const estudiante_id = document.getElementById(
+        "consulta-estudiante"
+      ).value;
+      await obtenerInscripcionesPorEstudiante(estudiante_id);
+    });
+});
+
+function validarInscripcion(estudiante_id, curso_id, nota) {
+  const estudianteVal = /^\d+$/; // //solo números enteros positivos
+  const cursoVal = /^\d+$/;
+  const notaVal = /^\d+$/;
+
+  if (!estudianteVal.test(estudiante_id)) {
+    Swal.fire({
+      icon: "error",
+      title: "Estudiante inválido",
+      text: "El estudiante no existe.",
+    });
+    return false;
+  }
+
+  if (!cursoVal.test(curso_id)) {
+    Swal.fire({
+      icon: "error",
+      title: "Curso inválido",
+      text: "El curso no existe.",
+    });
+    return false;
+  }
+
+  if (nota && (isNaN(nota) || nota < 1 || nota > 10)) {
+    Swal.fire({
+      icon: "error",
+      title: "Error en la inscripción",
+      text: "La nota, si se proporciona, debe estar entre 1 y 10.",
+    });
+    return false;
+  }
+
+  return true;
+}
+
+function validarNota(nota) {
+  const notaVal = /^\d+$/;
+
+  if (!nota || isNaN(nota) || nota < 1 || nota > 10 || !notaVal.test(nota)) {
+    Swal.fire({
+      icon: "error",
+      title: "Nota inválida",
+      text: "La nota debe estar entre 1 y 10.",
+    });
+    return;
+  }
+  return true;
+}
+
+async function obtenerInscripciones() {
+  try {
+    const response = await fetch("http://localhost:3000/inscripciones");
+    const inscripciones = await response.json();
+    llenarTablaInscripciones(inscripciones);
   } catch (error) {
-    console.error("Error al obtener estudiantes:", error);
+    console.error("Error al obtener inscripciones:", error);
   }
 }
 
-async function obtenerCursos() {
+async function cargarCursosConsultas() {
   try {
     const response = await fetch("http://localhost:3000/cursos");
-    if (!response.ok) throw new Error('Error en la red');
-
     const cursos = await response.json();
-    const cursoSelect = document.getElementById("curso");
+
+    const selectCurso = document.getElementById("consulta-curso");
 
     cursos.forEach((curso) => {
       const option = document.createElement("option");
       option.value = curso.id;
       option.textContent = curso.nombre;
-      cursoSelect.appendChild(option);
+      selectCurso.appendChild(option);
     });
   } catch (error) {
-    console.error("Error al obtener cursos:", error);
+    console.error("Error al cargar cursos:", error);
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  obtenerEstudiantes();
-  obtenerCursos();
-});
+async function cargarEstudiantesConsultas() {
+  try {
+    const response = await fetch("http://localhost:3000/estudiantes");
+    const estudiantes = await response.json();
 
-document.getElementById("form-inscripcion").addEventListener("submit", async function (event) {
-  event.preventDefault();
-  const estudiante = document.getElementById("estudiante").value;
-  const curso = document.getElementById("curso").value;
-  const nota = document.getElementById("nota").value || 0; // Usa 0 si no se especifica nota
+    const selectEstudiante = document.getElementById("consulta-estudiante");
+    estudiantes.forEach((estudiante) => {
+      const option = document.createElement("option");
+      option.value = estudiante.id;
+      option.textContent = `${estudiante.nombre} ${estudiante.apellido}`;
+      selectEstudiante.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error al cargar estudiantes:", error);
+  }
+}
 
+async function cargarCursosInscribir() {
+  try {
+    const response = await fetch("http://localhost:3000/cursos");
+    const cursos = await response.json();
+
+    const selectCurso = document.getElementById("curso");
+
+    cursos.forEach((curso) => {
+      const option = document.createElement("option");
+      option.value = curso.id;
+      option.textContent = curso.nombre;
+      selectCurso.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error al cargar cursos:", error);
+  }
+}
+
+async function cargarEstudiantesInscribir() {
+  try {
+    const response = await fetch("http://localhost:3000/estudiantes");
+    const estudiantes = await response.json();
+
+    const selectEstudiante = document.getElementById("estudiante");
+    estudiantes.forEach((estudiante) => {
+      const option = document.createElement("option");
+      option.value = estudiante.id;
+      option.textContent = `${estudiante.nombre} ${estudiante.apellido}`;
+      selectEstudiante.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error al cargar estudiantes:", error);
+  }
+}
+
+function llenarTablaInscripciones(inscripciones) {
+  const tablaInscripciones = document.getElementById("tabla-inscripciones");
+  tablaInscripciones.innerHTML = "";
+
+  inscripciones.forEach((inscripcion) => {
+    const curso_id = inscripcion.curso ? inscripcion.curso.id : undefined;
+    const estudiante_id = inscripcion.estudiante
+      ? inscripcion.estudiante.id
+      : undefined;
+
+    if (!curso_id || !estudiante_id) {
+      console.error(
+        "Falta curso_id o estudiante_id en la inscripción:",
+        inscripcion
+      );
+    }
+
+    const fila = document.createElement("tr");
+
+    fila.innerHTML = `
+      <td>${inscripcion.curso.nombre}</td>
+      <td>${inscripcion.estudiante.nombre} ${
+      inscripcion.estudiante.apellido
+    }</td>
+      <td>${inscripcion.nota || "No asignada"}</td>
+      <td class="tabla-accion">
+        <button class="btn-modificar" onclick="modificarNota(${curso_id}, ${estudiante_id})"><i class="fas fa-pencil-alt"></i></button>
+        <button class="btn-eliminar" onclick="eliminarInscripcion(${curso_id}, ${estudiante_id})"><i class="fas fa-times"></i></button>
+      </td>
+    `;
+
+    tablaInscripciones.appendChild(fila);
+  });
+}
+
+async function obtenerInscripcionesPorCurso(curso_id) {
+  try {
+    const response = await fetch(
+      `http://localhost:3000/inscripciones/curso/${curso_id}`
+    );
+    if (response.ok) {
+      const inscripciones = await response.json();
+      llenarTablaInscripciones(inscripciones);
+    } else if (response.status === 404) {
+      Swal.fire({
+        icon: "warning",
+        title: "Sin inscripciones",
+        text: "No se encontraron alumnos inscriptos para este curso.",
+      });
+      llenarTablaInscripciones([]);
+    } else {
+      throw new Error("Error inesperado al obtener inscripciones.");
+    }
+  } catch (error) {
+    console.error("Error al obtener inscripciones por curso:", error);
+  }
+}
+
+async function obtenerInscripcionesPorEstudiante(estudiante_id) {
+  try {
+    const response = await fetch(
+      `http://localhost:3000/inscripciones/estudiante/${estudiante_id}`
+    );
+    if (response.ok) {
+      const inscripciones = await response.json();
+      llenarTablaInscripciones(inscripciones);
+    } else if (response.status === 404) {
+      Swal.fire({
+        icon: "warning",
+        title: "Sin inscripciones",
+        text: "No se encontraron inscripciones para este estudiante.",
+      });
+      llenarTablaInscripciones([]);
+    } else {
+      throw new Error("Error inesperado al obtener inscripciones.");
+    }
+  } catch (error) {
+    console.error("Error al obtener inscripciones por estudiante:", error);
+  }
+}
+
+async function inscribirEstudiante(inscripcion) {
   try {
     const response = await fetch("http://localhost:3000/inscripciones", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ estudiante, curso, nota })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inscripcion),
     });
 
+    const result = await response.json();
+
     if (response.ok) {
-      Swal.fire(`Inscrito ${estudiante} en ${curso} con nota ${nota}`);
-      this.reset();
+      Swal.fire({
+        icon: "success",
+        title: "Inscripción realizada",
+        text: "La inscripción ha sido realizada correctamente.",
+      });
+      obtenerInscripciones();
+    } else if (
+      result.message === "El estudiante ya está inscrito en este curso."
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "No se puede inscribir",
+        text: "El estudiante ya está inscrito en este curso.",
+      });
     } else {
-      Swal.fire("Error al inscribir al estudiante");
+      Swal.fire({
+        icon: "error",
+        title: "Error al inscribir",
+        text: "Hubo un problema al inscribir al estudiante.",
+      });
     }
   } catch (error) {
-    console.error("Error al inscribir al estudiante:", error);
-    Swal.fire("Error en la conexión");
+    console.error("Error al inscribir estudiante:", error);
   }
-});
+}
 
-document.getElementById("consultar-curso-btn").addEventListener("click", async function () {
-  const cursoSeleccionado = document.getElementById("curso-consulta").value; 
-    Swal.fire("Por favor, selecciona un curso.");
-    return;
-  }
-
-  try {
-    const response = await fetch(`http://localhost:3000/curso/${cursoSeleccionado}`);
-    if (!response.ok) throw new Error('Error al consultar inscripciones por curso');
-    
-    const inscripciones = await response.json();
-    mostrarInscripciones(inscripciones);
-  } catch (error) {
-    console.error("Error al consultar inscripciones por curso:", error);
-  }
-});
-
-
-document.getElementById("consultar-estudiante-btn").addEventListener("click", async function () {
-  const estudianteSeleccionado = document.getElementById("estudiante-consulta").value; // Asegúrate de que el ID coincida
-  if (!estudianteSeleccionado) {
-    Swal.fire("Por favor, selecciona un estudiante.");
-    return;
-  }
-
-  try {
-    const response = await fetch(`http://localhost:3000/estudiante/${estudianteSeleccionado}`);
-    if (!response.ok) throw new Error('Error al consultar cursos por estudiante');
-    
-    const cursos = await response.json();
-    mostrarCursos(cursos);
-  } catch (error) {
-    console.error("Error al consultar cursos por estudiante:", error);
-  }
-});
-
-
-function mostrarInscripciones(inscripciones) {
-  const tablaInscripciones = document.getElementById("tabla-inscripciones");
-  tablaInscripciones.innerHTML = "";
-  inscripciones.forEach((inscripcion) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${inscripcion.curso}</td>
-      <td>${inscripcion.estudiante}</td>
-      <td>${inscripcion.nota}</td>
-    `;
-    tablaInscripciones.appendChild(row);
+async function eliminarInscripcion(curso_id, estudiante_id) {
+  Swal.fire({
+    title: "¿Está seguro?",
+    text: "No podrá revertir esta acción. ¿Desea eliminar la inscripción?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#145c17",
+    cancelButtonColor: "#6b1515",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/inscripciones/curso/${curso_id}/estudiante/${estudiante_id}`,
+          {
+            method: "DELETE",
+          }
+        );
+        if (response.ok) {
+          Swal.fire({
+            icon: "success",
+            title: "Inscripción eliminada",
+            text: "La inscripción ha sido eliminada correctamente.",
+          });
+          obtenerInscripciones();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error al eliminar",
+            text: "Hubo un problema al eliminar la inscripción.",
+          });
+        }
+      } catch (error) {
+        console.error("Error al eliminar inscripción:", error);
+      }
+    }
   });
 }
 
+function modificarNota(curso_id, estudiante_id) {
+  const modal = document.getElementById("modal-modificar-nota");
+  modal.style.display = "block";
 
-function mostrarCursos(cursos) {
-  const tablaCursos = document.getElementById("tabla-cursos");
-  tablaCursos.innerHTML = ""; 
-  cursos.forEach((curso) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${curso.nombre}</td>
-      <td>${curso.nota}</td>
-    `;
-    tablaCursos.appendChild(row);
+  document.getElementById("modificar-inscripcion-id").value = JSON.stringify({
+    curso_id,
+    estudiante_id,
   });
+
+  fetch(
+    `http://localhost:3000/inscripciones/curso/${curso_id}/estudiante/${estudiante_id}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      document.getElementById("modificar-nota").value = data.nota || "";
+    })
+    .catch((error) => {
+      console.error("Error al cargar la inscripción:", error);
+    });
 }
 
-obtenerEstudiantes();
-obtenerCursos();
+document.querySelector(".close").addEventListener("click", () => {
+  document.getElementById("modal-modificar-nota").style.display = "none";
+});
+
+document
+  .getElementById("form-modificar-nota")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const { curso_id, estudiante_id } = JSON.parse(
+      document.getElementById("modificar-inscripcion-id").value
+    );
+    const nuevaNota = document.getElementById("modificar-nota").value;
+
+    if (!validarNota(nuevaNota)) {
+      return;
+    }
+
+    const data = {
+      curso_id,
+      estudiante_id,
+      nota: nuevaNota,
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/inscripciones/curso/${curso_id}/estudiante/${estudiante_id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (response.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "Nota modificada",
+          text: "La nota ha sido modificada correctamente.",
+        });
+        document.getElementById("modal-modificar-nota").style.display = "none";
+        obtenerInscripciones();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error al modificar la nota",
+          text: "Hubo un problema al modificar la nota.",
+        });
+      }
+    } catch (error) {
+      console.error("Error en la solicitud de modificación:", error);
+    }
+  });

@@ -71,7 +71,7 @@ function validarCurso(nombre, descripcion, profesor_id) {
 }
 
 
-async function obtenerCursos() {
+export async function obtenerCursos() {
   try {
     const response = await fetch("http://localhost:3000/cursos", {
       method: "GET",
