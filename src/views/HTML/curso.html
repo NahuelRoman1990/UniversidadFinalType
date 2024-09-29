@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Cursos</title>
+    <link rel="stylesheet" href="../CSS/stylesCurso.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <h1>Gestión de Cursos</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="estudiantes.html">Estudiantes</a></li>
+            <li><a href="profesores.html">Profesores</a></li>
+            <li><a href="curso.html" class="active">Cursos</a></li>
+            <li><a href="inscripciones.html">Inscripciones</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section class="agregarCurso">
+            <h2>AGREGAR NUEVO CURSO</h2>
+            <form id="form-curso" novalidate>
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required placeholder="Ingrese el nombre del curso">
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="descripcion" required placeholder="Ingrese la descripción del curso"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="profesor">Profesor:</label>
+                    <select id="profesor" name="profesor" required>
+                    </select>
+                </div>
+                <button type="submit">Agregar</button>
+            </form>
+        </section>
+
+        <section class="tablaCursos">
+            <h2>LISTA DE CURSOS</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NOMBRE</th>
+                        <th>DESCRIPCION</th>
+                        <th>PROFESOR</th>
+                        <th>ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-cursos">
+                </tbody>
+            </table>
+        </section>    
+    </div>
+
+    <footer>
+        <p>Universidad</p>
+    </footer>
+
+    <section id="modal-modificar" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Modificar Curso</h2>
+            <form id="form-modificar" novalidate>
+                <input type="hidden" id="modificar-id">
+                <div class="form-group">
+                    <label for="modificar-nombre">Nombre:</label>
+                    <input type="text" id="modificar-nombre" required placeholder="Ingrese el nombre del curso">
+                </div>
+                <div class="form-group">
+                    <label for="modificar-descripcion">Descripción:</label>
+                    <textarea id="modificar-descripcion" required placeholder="Ingrese la nueva descripción"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="modificar-profesor">Profesor:</label>
+                    <select id="modificar-profesor" required>
+                    </select>
+                </div>
+                <button type="submit">Guardar cambios</button>
+            </form>
+        </div>
+    </section>
+
+    <script src="../JavaScript/cursos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

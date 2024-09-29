@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Profesores</title>
+    <link rel="stylesheet" href="../CSS/stylesProfesor.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <h1>Gestión de Profesores</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="estudiantes.html">Estudiantes</a></li>
+            <li><a href="profesores.html" class="active">Profesores</a></li>
+            <li><a href="curso.html">Cursos</a></li>
+            <li><a href="inscripciones.html">Inscripciones</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section class="agregarProfesor">
+            <h2>Agregar Nuevo Profesor</h2>
+            <form id="form-profesor" novalidate>
+                <div class="form-group">
+                    <label for="dni">DNI:</label>
+                    <input type="text" id="dni" name="dni" required minlength="8" maxlength="8" placeholder="Ingrese 8 dígitos">
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required placeholder="Ingrese el nombre">
+                </div>
+                <div class="form-group">
+                    <label for="apellido">Apellido:</label>
+                    <input type="text" id="apellido" name="apellido" required placeholder="Ingrese el apellido">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="Ingrese el email">
+                </div>
+                <div class="form-group">
+                    <label for="profesion">Profesión:</label>
+                    <input type="text" id="profesion" name="profesion" required placeholder="Ingrese la profesión">
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="text" id="telefono" name="telefono" required placeholder="Ingrese el teléfono">
+                </div>
+                <button type="submit">Agregar</button>
+            </form>
+        </section>
+
+        <section class="tablaProfesor">
+            <h2>Lista de Profesores</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>DNI</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Profesión</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-profesores">
+
+                </tbody>
+            </table>
+        </section>   
+    </div> 
+
+    <footer>
+        <p>&copy; 2024 Universidad. Todos los derechos reservados.</p>
+    </footer>
+
+    <div id="modal-modificar" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Modificar Profesor</h2>
+            <form id="form-modificar" novalidate>
+                <input type="hidden" id="modificar-id">
+                <div class="form-group">
+                    <label for="modificar-dni">DNI:</label>
+                    <input type="text" id="modificar-dni" required minlength="8" maxlength="8" placeholder="Ingrese 8 dígitos">
+                </div>
+                <div class="form-group">
+                    <label for="modificar-nombre">Nombre:</label>
+                    <input type="text" id="modificar-nombre" required placeholder="Ingrese el nombre">
+                </div>
+                <div class="form-group">
+                    <label for="modificar-apellido">Apellido:</label>
+                    <input type="text" id="modificar-apellido" required placeholder="Ingrese el apellido">
+                </div>
+                <div class="form-group">
+                    <label for="modificar-email">Email:</label>
+                    <input type="email" id="modificar-email" required placeholder="Ingrese el email">
+                </div>
+                <div class="form-group">
+                    <label for="modificar-profesion">Profesión:</label>
+                    <input type="text" id="modificar-profesion" required placeholder="Ingrese la profesión">
+                </div>
+                <div class="form-group">
+                    <label for="modificar-telefono">Teléfono:</label>
+                    <input type="text" id="modificar-telefono" required placeholder="Ingrese el teléfono">
+                </div>
+                <button type="submit">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="../JavaScript/profesores.js"></script>
+</body>
+</html>

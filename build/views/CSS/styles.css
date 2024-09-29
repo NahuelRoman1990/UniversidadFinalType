@@ -1,0 +1,80 @@
+/* styles.css */
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Navegación */
+nav {
+    background: #004d99; /* Color de fondo de la navegación */
+    padding: 15px; /* Espaciado interno */
+}
+
+nav ul {
+    list-style-type: none; /* Sin viñetas */
+    padding: 0; /* Sin padding */
+    margin: 0; /* Sin margen */
+    display: flex; /* Disposición flexible */
+    justify-content: center; /* Centrado de los enlaces */
+}
+
+nav ul li {
+    margin: 0 15px; /* Espaciado entre elementos de la lista */
+}
+
+nav ul li a {
+    color: white; /* Color del texto */
+    text-decoration: none; /* Sin subrayado */
+    font-size: 18px; /* Tamaño de fuente */
+    padding: 10px 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background 0.3s; /* Transición suave al cambiar el fondo */
+}
+
+nav ul li a:hover {
+    background: #003366; /* Fondo al pasar el ratón */
+}
+
+/* Estilo del footer */
+footer {
+    text-align: center; /* Centrando texto */
+    padding: 20px; /* Espaciado interno */
+    background: #004d99; /* Color de fondo */
+    color: white; /* Color del texto */
+    position: relative; /* Posición relativa */
+    bottom: 0; /* Parte inferior */
+    width: 100%; /* Ancho completo */
+}
+
+/* Estilo para el contenido principal */
+main {
+    max-width: 1200px; /* Ancho máximo */
+    margin: 20px auto; /* Centrado */
+    padding: 20px; /* Espaciado interno */
+    background: white; /* Fondo blanco */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Título principal */
+h1 {
+    text-align: center; /* Centrando texto */
+    color: #004d99; /* Color del título */
+    margin-bottom: 20px; /* Margen inferior */
+}
+
+/* Espaciado entre secciones */
+section {
+    margin-bottom: 20px; /* Margen inferior para secciones */
+}
+
+/* Estilo para párrafos */
+p {
+    line-height: 1.6; /* Altura de línea */
+    margin: 0; /* Sin margen */
+    color: #333; /* Color del texto */
+}
