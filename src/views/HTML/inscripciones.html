@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscripción de Estudiantes</title>
+    <title>Gestión de Inscripciones</title>
     <link rel="stylesheet" href="../CSS/stylesInscripcion.css">
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-
 <body>
     <header>
-        <h1>Inscripción de Estudiantes a Cursos</h1>
+        <h1>Gestión de Inscripciones</h1>
     </header>
     
     <nav>
@@ -19,94 +18,89 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="estudiantes.html">Estudiantes</a></li>
             <li><a href="profesores.html">Profesores</a></li>
-            <li><a href="curso.html">Cursos</a></li>
-            <li><a href="inscripciones.html" class="active">Inscripciones</a></li>
+            <li><a href="cursos.html">Cursos</a></li>
+            <li><a href="inscripciones.html">Inscripciones</a></li>
         </ul>
     </nav>
 
     <div class="container">
-        <section class="inscribir-estudiante">
-            <h2>INSCRIBIR ESTUDIANTE A CURSO</h2>
-            <form id="form-inscripcion" novalidate>
-                <div class="form-group">
-                    <label for="estudiante">Estudiante:</label>
-                    <select id="estudiante" required>
-                        <option value="">Selecciona un estudiante</option>
-                    </select>
-                </div>
+      <section class="inscribir">
+          <h2>INSCRIBIR ESTUDIANTE A CURSO</h2>
+          <form id="form-inscripcion" novalidate>
+              <label for="estudiante">Estudiante:</label>
+              <select id="estudiante" name="estudiante" required>
 
-                <div class="form-group">
-                    <label for="curso">Curso:</label>
-                    <select id="curso" required>
-                        <option value="">Selecciona un curso</option>
-                    </select>
-                </div>
+              </select>
+              <br>
+              <label for="curso">Curso:</label>
+              <select id="curso" name="curso" required>
 
-                <div class="form-group">
-                    <label for="nota">Nota:</label>
-                    <select id="nota">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
+              </select>
+              <br>
+              <label for="nota">Nota:</label>
+              <input type="number" id="nota" name="nota" step="0.01" min="0" max="10">
+              <br>
+              <button type="submit">Inscribir</button>
+          </form>
+      </section>
 
-                <button type="submit">Inscribir</button>
-            </form>
-        </section>
+      <section class="consultar">
+          <h2>CONSULTAR INSCRIPCIONES</h2>
+          
+          <form id="form-consultar-curso">
+            <label for="consulta-curso">Consultar alumnos por curso:</label>
+            <select id="consulta-curso" name="consulta-curso" required>
 
-        <section class="consultar-inscripciones">
-            <h2>CONSULTAR INSCRIPCIONES</h2>
-            <div>
-                <h3>Consultar alumnos por curso:</h3>
-                <select id="curso-consulta">
-                    <option value="">Selecciona un curso</option>
-                </select>
-                <button id="consultar-curso-btn">Consultar por Curso</button>
-            </div>
+            </select>
+            <button type="submit">Consultar</button>
+          </form>
+        
+          <form id="form-consultar-estudiante">
+            <label for="consulta-estudiante">Consultar cursos por estudiante:</label>
+            <select id="consulta-estudiante" name="consulta-estudiante" required>
 
-            <div>
-                <h3>Consultar cursos por estudiante:</h3>
-                <select id="estudiante-consulta">
-                    <option value="">Selecciona un estudiante</option>
-                </select>
-                <button id="consultar-estudiante-btn">Consultar por Estudiante</button>
-            </div>
+            </select>
+            <button type="submit">Consultar</button>
+          </form>
+           <br>
+          <button id="consultar-todas" class="btn">Consultar todas</button>
+        
+          <h2>LISTA DE INSCRIPCIONES</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>CURSO</th>
+                <th>ESTUDIANTE</th>
+                <th>NOTA</th>
+                <th>ACCIONES</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-inscripciones">
 
-            <div>
-                <button id="consultar-todas-btn">Consultar Todas</button>
-            </div>
-
-            <h2>LISTA DE INSCRIPCIONES</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>CURSO</th>
-                        <th>ESTUDIANTE</th>
-                        <th>NOTA</th>
-                        <th>ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-inscripciones">
-                </tbody>
-            </table>
+            </tbody>
+          </table>
         </section>
     </div>
+
+  <section id="modal-modificar-nota" class="modal">
+      <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Modificar Nota</h2>
+          <form id="form-modificar-nota" novalidate>
+              <input type="hidden" id="modificar-inscripcion-id">
+              <label for="modificar-nota">Nota:</label>
+              <input type="number" id="modificar-nota" step="0.01" min="0" max="10" required>
+              <br>
+              <button type="submit">Guardar cambios</button>
+            </form>
+      </div>
+  </section>
+
 
     <footer>
         <p>Universidad</p>
     </footer>
 
-    <!-- Referencia al archivo JavaScript externo como módulo -->
-    <script type="module" src="../JavaScript/inscripciones.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../JavaScript/incripciones.js"></script>
 </body>
 </html>

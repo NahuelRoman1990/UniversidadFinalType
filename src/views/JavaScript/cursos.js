@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   obtenerCursos();
   obtenerProfesoresParaFormulario();
 
-
   const formCurso = document.getElementById("form-curso");
   formCurso.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -24,54 +23,34 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function validarCurso(nombre, descripcion, profesor_id) {
-  const nombreVal = /^[a-zA-ZÑñ0-9\s]{3,50}$/;
-  const descripcionVal = /^.{5,200}$/; 
-  const profesor_idVal = /^\d+$/; 
+  const nombreVal = /^[a-zA-Z0-9\s]{3,50}$/;
+  const descripcionVal = /^.{5,200}$/;
+  const profesor_idVal = /^\d+$/;
 
-  if (!nombreVal.test(nombre) && !descripcionVal.test(descripcion)) {
-    Swal.fire({
-      icon: "error",
-      title: "Campos incompletos",
-      text: "Por favor, complete todos los campos.",
-    });
+  if (!nombreVal.test(nombre) || !descripcionVal.test(descripcion)) {
+    mostrarAlerta("Campos incompletos", "Por favor, complete todos los campos.");
     return false;
   }
 
-  
   if (!nombreVal.test(nombre)) {
-    Swal.fire({
-      icon: "warning",
-      title: "Falta el Nombre",
-      text: "El nombre debe tener al menos 3 caracteres.",
-    });
+    mostrarAlerta("Falta el Nombre", "El nombre debe tener al menos 3 caracteres.");
     return false;
   }
 
-  
   if (!descripcionVal.test(descripcion)) {
-    Swal.fire({
-      icon: "warning",
-      title: "Falta la Descripción",
-      text: "La descripción debe tener al menos 10 caracteres.",
-    });
+    mostrarAlerta("Falta la Descripción", "La descripción debe tener al menos 10 caracteres.");
     return false;
   }
 
-  
   if (!profesor_idVal.test(profesor_id)) {
-    Swal.fire({
-      icon: "error",
-      title: "Profesor no seleccionado",
-      text: "Debe seleccionar un profesor para el curso.",
-    });
+    mostrarAlerta("Profesor no seleccionado", "Debe seleccionar un profesor para el curso.");
     return false;
   }
 
   return true;
 }
 
-
-export async function obtenerCursos() {
+async function obtenerCursos() {
   try {
     const response = await fetch("http://localhost:3000/cursos", {
       method: "GET",
@@ -90,9 +69,9 @@ export async function obtenerCursos() {
             <td>${curso.nombre}</td>
             <td>${curso.descripcion}</td>
             <td>${curso.profesor.nombre} ${curso.profesor.apellido}</td>
-            <td class= "tabla-accion">
-              <button class="btn-modificar" onclick="mostrarFormularioModificar(${curso.id})"><i class="fas fa-pencil-alt"></i></button>
-              <button class="btn-eliminar" onclick="eliminarCurso(${curso.id})"><i class="fas fa-times"></i></button>
+            <td class="tabla-accion">
+              <button class="btn-modificar" onclick="mostrarFormularioModificar(${curso.id})">✏️</button>
+              <button class="btn-eliminar" onclick="eliminarCurso(${curso.id})">❌</button>
             </td>
           `;
       tbody.appendChild(row);
@@ -101,7 +80,6 @@ export async function obtenerCursos() {
     console.error("Error al obtener cursos:", error);
   }
 }
-
 
 async function obtenerProfesoresParaFormulario() {
   try {
@@ -121,81 +99,47 @@ async function obtenerProfesoresParaFormulario() {
 }
 
 async function agregarCurso(curso) {
+  try {
+    const response = await fetch("http://localhost:3000/cursos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(curso),
+    });
+
+    if (response.ok) {
+      mostrarAlerta("Curso agregado", "El curso ha sido agregado correctamente.");
+      obtenerCursos();
+    } else {
+      mostrarAlerta("Error al agregar curso", "Hubo un problema al agregar el curso.");
+    }
+  } catch (error) {
+    console.error("Error al agregar curso:", error);
+  }
+}
+
+async function eliminarCurso(id) {
+  if (confirm("¿Está seguro? No podrá revertir esta acción. ¿Desea eliminar el curso?")) {
     try {
-      const response = await fetch("http://localhost:3000/cursos", {
-        method: "POST",
+      const response = await fetch(`http://localhost:3000/cursos/${id}`, {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(curso),
       });
-  
+
       if (response.ok) {
-        Swal.fire({
-          icon: "success",
-          title: "Curso agregado",
-          text: "El curso ha sido agregado correctamente.",
-          showConfirmButton: true, 
-          confirmButtonText: 'Aceptar', 
-          
-          customClass: {
-            popup: 'alerta-curso-agregado' 
-          }
-        });
+        mostrarAlerta("Curso eliminado", "El curso ha sido eliminado exitosamente.");
         obtenerCursos();
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error al agregar curso",
-          text: "Hubo un problema al agregar el curso.",
-        });
+        mostrarAlerta("Error al eliminar curso", "No se pudo eliminar el curso.");
       }
     } catch (error) {
-      console.error("Error al agregar curso:", error);
+      console.error("Error al eliminar curso:", error);
     }
   }
-  
-async function eliminarCurso(id) {
-  Swal.fire({
-    title: "¿Está seguro?",
-    text: "No podrá revertir esta acción. ¿Desea eliminar el curso?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#145c17",
-    cancelButtonColor: "#6b1515",
-    confirmButtonText: "Sí, eliminar",
-    cancelButtonText: "Cancelar",
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      try {
-        const response = await fetch(`http://localhost:3000/cursos/${id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (response.ok) {
-          Swal.fire({
-            icon: "success",
-            title: "Curso eliminado",
-            text: "El curso ha sido eliminado exitosamente.",
-          });
-          obtenerCursos();
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Error al eliminar curso",
-            text: "No se pudo eliminar el curso.",
-          });
-        }
-      } catch (error) {
-        console.error("Error al eliminar curso:", error);
-      }
-    }
-  });
 }
-
 
 async function mostrarFormularioModificar(id) {
   try {
@@ -208,8 +152,7 @@ async function mostrarFormularioModificar(id) {
 
     const profesoresResponse = await fetch("http://localhost:3000/profesores");
     const profesores = await profesoresResponse.json();
-    const selectProfesorModificar =
-      document.getElementById("modificar-profesor");
+    const selectProfesorModificar = document.getElementById("modificar-profesor");
 
     selectProfesorModificar.innerHTML = "";
 
@@ -223,31 +166,28 @@ async function mostrarFormularioModificar(id) {
       selectProfesorModificar.appendChild(option);
     });
 
-
     document.getElementById("modal-modificar").style.display = "block";
   } catch (error) {
     console.error("Error al cargar los datos del curso:", error);
   }
 }
 
-document
-  .getElementById("form-modificar")
-  .addEventListener("submit", async function (event) {
-    event.preventDefault();
+document.getElementById("form-modificar").addEventListener("submit", async function (event) {
+  event.preventDefault();
 
-    const id = document.getElementById("modificar-id").value;
-    const nombre = document.getElementById("modificar-nombre").value;
-    const descripcion = document.getElementById("modificar-descripcion").value;
-    const profesor_id = document.getElementById("modificar-profesor").value;
+  const id = document.getElementById("modificar-id").value;
+  const nombre = document.getElementById("modificar-nombre").value;
+  const descripcion = document.getElementById("modificar-descripcion").value;
+  const profesor_id = document.getElementById("modificar-profesor").value;
 
-    const validacionExitosa = validarCurso(nombre, descripcion, profesor_id);
-    if (!validacionExitosa) {
-      return;
-    } else {
-      const cursoModificado = { nombre, descripcion, profesor_id };
-      await modificarCurso(id, cursoModificado);
-    }
-  });
+  const validacionExitosa = validarCurso(nombre, descripcion, profesor_id);
+  if (!validacionExitosa) {
+    return;
+  } else {
+    const cursoModificado = { nombre, descripcion, profesor_id };
+    await modificarCurso(id, cursoModificado);
+  }
+});
 
 async function modificarCurso(id, cursoModificado) {
   try {
@@ -260,19 +200,11 @@ async function modificarCurso(id, cursoModificado) {
     });
 
     if (response.ok) {
-      Swal.fire({
-        icon: "success",
-        title: "Curso modificado",
-        text: "El curso ha sido modificado exitosamente.",
-      });
+      mostrarAlerta("Curso modificado", "El curso ha sido modificado exitosamente.");
       document.getElementById("modal-modificar").style.display = "none";
       obtenerCursos();
     } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error al modificar curso",
-        text: "No se pudo modificar el curso.",
-      });
+      mostrarAlerta("Error al modificar curso", "No se pudo modificar el curso.");
     }
   } catch (error) {
     console.error("Error al modificar curso:", error);

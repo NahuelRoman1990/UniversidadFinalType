@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("submit", async (event) => {
       event.preventDefault();
 
-  
       const estudiante_id = document.getElementById("estudiante").value;
       const curso_id = document.getElementById("curso").value;
       const nota = document.getElementById("nota").value;
@@ -34,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-
   const botonConsultarTodas = document.getElementById("consultar-todas");
   botonConsultarTodas.addEventListener("click", obtenerInscripciones);
 
@@ -46,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
       await obtenerInscripcionesPorCurso(curso_id);
     });
 
- 
   document
     .getElementById("form-consultar-estudiante")
     .addEventListener("submit", async (event) => {
@@ -59,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function validarInscripcion(estudiante_id, curso_id, nota) {
-  const estudianteVal = /^\d+$/; // //solo números enteros positivos
+  const estudianteVal = /^\d+$/;
   const cursoVal = /^\d+$/;
   const notaVal = /^\d+$/;
 
@@ -394,7 +391,7 @@ document
       const response = await fetch(
         `http://localhost:3000/inscripciones/curso/${curso_id}/estudiante/${estudiante_id}`,
         {
-          method: "PUT",
+          method: "PUT", 
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         }

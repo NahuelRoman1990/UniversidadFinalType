@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Cursos</title>
     <link rel="stylesheet" href="../CSS/stylesCurso.css">
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -19,7 +17,7 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="estudiantes.html">Estudiantes</a></li>
             <li><a href="profesores.html">Profesores</a></li>
-            <li><a href="curso.html" class="active">Cursos</a></li>
+            <li><a href="cursos.html" class="active">Cursos</a></li>
             <li><a href="inscripciones.html">Inscripciones</a></li>
         </ul>
     </nav>
@@ -30,11 +28,11 @@
             <form id="form-curso" novalidate>
                 <div class="form-group">
                     <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" required placeholder="Ingrese el nombre del curso">
+                    <input type="text" id="nombre" name="nombre" required>
                 </div>
                 <div class="form-group">
                     <label for="descripcion">Descripción:</label>
-                    <textarea id="descripcion" name="descripcion" required placeholder="Ingrese la descripción del curso"></textarea>
+                    <textarea id="descripcion" name="descripcion" required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="profesor">Profesor:</label>
@@ -64,7 +62,7 @@
     </div>
 
     <footer>
-        <p>Universidad</p>
+        <p>&copy; 2024 Universidad. Todos los derechos reservados.</p>
     </footer>
 
     <section id="modal-modificar" class="modal">
@@ -75,11 +73,11 @@
                 <input type="hidden" id="modificar-id">
                 <div class="form-group">
                     <label for="modificar-nombre">Nombre:</label>
-                    <input type="text" id="modificar-nombre" required placeholder="Ingrese el nombre del curso">
+                    <input type="text" id="modificar-nombre" required>
                 </div>
                 <div class="form-group">
                     <label for="modificar-descripcion">Descripción:</label>
-                    <textarea id="modificar-descripcion" required placeholder="Ingrese la nueva descripción"></textarea>
+                    <textarea id="modificar-descripcion" required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="modificar-profesor">Profesor:</label>
@@ -91,7 +89,34 @@
         </div>
     </section>
 
+    <div id="modal-alert" class="modal">
+        <div class="modal-content">
+            <span class="close-alert">&times;</span>
+            <h2 id="alert-title"></h2>
+            <p id="alert-text"></p>
+            <button id="alert-button">Aceptar</button>
+        </div>
+    </div>
+
     <script src="../JavaScript/cursos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById("modal-alert").style.display = "none";
+
+        function mostrarAlerta(titulo, texto) {
+            document.getElementById("alert-title").innerText = titulo;
+            document.getElementById("alert-text").innerText = texto;
+            document.getElementById("modal-alert").style.display = "block";
+        }
+
+        document.getElementById("alert-button").onclick = function() {
+            document.getElementById("modal-alert").style.display = "none";
+        };
+
+        document.querySelector(".close-alert").onclick = function () {
+            document.getElementById("modal-alert").style.display = "none";
+        };
+
+        // El resto de tu código de JavaScript
+    </script>
 </body>
 </html>

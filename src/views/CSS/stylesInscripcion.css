@@ -58,7 +58,13 @@ section {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+.agregarEstudiante {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.agregarEstudiante h2 {
     margin-bottom: 20px;
     color: #333;
 }
@@ -68,6 +74,7 @@ h2 {
     flex-direction: column;
     margin-bottom: 15px;
     width: 100%;
+    max-width: 400px;
 }
 
 .form-group label {
@@ -76,15 +83,13 @@ h2 {
     color: #555;
 }
 
-.form-group input, 
-.form-group select {
+.form-group input {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 100%;
 }
 
-button[type="submit"], 
+button[type="submit"],
 button {
     background-color: #4CAF50;
     color: white;
@@ -96,9 +101,14 @@ button {
     transition: background-color 0.3s;
 }
 
-button[type="submit"]:hover, 
+button[type="submit"]:hover,
 button:hover {
     background-color: #45a049;
+}
+
+.tablaEstudiante h2 {
+    margin-bottom: 20px;
+    color: #333;
 }
 
 table {
@@ -122,40 +132,38 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-.btn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 5px; 
+.tabla-accion button {
+    margin: 0 5px;
+    padding: 8px 12px;
+    font-size: 14px;
 }
 
-.btn.modificar {
-    background-color: #4CAF50;
-    color: white;
+.tabla-accion .btn-modificar {
+    background-color: #2196F3;
 }
 
-.btn.eliminar {
-    background-color: #f44336; 
-    color: white;
+.tabla-accion .btn-modificar:hover {
+    background-color: #0b7dda;
 }
 
+.tabla-accion .btn-eliminar {
+    background-color: #f44336;
+}
 
-.btn:hover {
-    opacity: 0.8; 
+.tabla-accion .btn-eliminar:hover {
+    background-color: #da190b;
 }
 
 .modal {
     display: none;
-    position: fixed;
-    z-index: 1000;
+    position: fixed; 
+    z-index: 1000; 
     left: 0;
     top: 0;
     width: 100%; 
     height: 100%; 
     overflow: auto; 
-    background-color: rgba(0, 0, 0, 0.4); 
+    background-color: rgba(0,0,0,0.4); 
     padding-top: 60px;
 }
 
@@ -196,6 +204,25 @@ footer {
     width: 100%;
 }
 
+.modal-alert .modal-content {
+    padding: 20px;
+}
+
+.close-alert {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-alert:hover,
+.close-alert:focus {
+    color: black;
+    text-decoration: none;
+}
 
 @media screen and (max-width: 600px) {
     nav ul {
