@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Inscripciones</title>
     <link rel="stylesheet" href="../CSS/stylesInscripcion.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
@@ -19,88 +17,92 @@
             <li><a href="estudiantes.html">Estudiantes</a></li>
             <li><a href="profesores.html">Profesores</a></li>
             <li><a href="cursos.html">Cursos</a></li>
-            <li><a href="inscripciones.html">Inscripciones</a></li>
+            <li><a href="inscripciones.html" class="active">Inscripciones</a></li>
         </ul>
     </nav>
 
     <div class="container">
-      <section class="inscribir">
-          <h2>INSCRIBIR ESTUDIANTE A CURSO</h2>
-          <form id="form-inscripcion" novalidate>
-              <label for="estudiante">Estudiante:</label>
-              <select id="estudiante" name="estudiante" required>
+        <section class="inscribir">
+            <h2>INSCRIBIR ESTUDIANTE A CURSO</h2>
+            <form id="form-inscripcion" novalidate>
+                <label for="estudiante">Estudiante:</label>
+                <select id="estudiante" name="estudiante" required>
+                </select>
+                <br>
+                <label for="curso">Curso:</label>
+                <select id="curso" name="curso" required>
+                </select>
+                <br>
+                <label for="nota">Nota:</label>
+                <input type="number" id="nota" name="nota" step="0.01" min="0" max="10">
+                <br>
+                <button type="submit">Inscribir</button>
+            </form>
+        </section>
 
-              </select>
-              <br>
-              <label for="curso">Curso:</label>
-              <select id="curso" name="curso" required>
-
-              </select>
-              <br>
-              <label for="nota">Nota:</label>
-              <input type="number" id="nota" name="nota" step="0.01" min="0" max="10">
-              <br>
-              <button type="submit">Inscribir</button>
-          </form>
-      </section>
-
-      <section class="consultar">
-          <h2>CONSULTAR INSCRIPCIONES</h2>
-          
-          <form id="form-consultar-curso">
-            <label for="consulta-curso">Consultar alumnos por curso:</label>
-            <select id="consulta-curso" name="consulta-curso" required>
-
-            </select>
-            <button type="submit">Consultar</button>
-          </form>
+        <section class="consultar">
+            <h2>CONSULTAR INSCRIPCIONES</h2>
+            
+            <form id="form-consultar-curso">
+                <label for="consulta-curso">Consultar alumnos por curso:</label>
+                <select id="consulta-curso" name="consulta-curso" required>
+                </select>
+                <button type="submit">Consultar</button>
+            </form>
         
-          <form id="form-consultar-estudiante">
-            <label for="consulta-estudiante">Consultar cursos por estudiante:</label>
-            <select id="consulta-estudiante" name="consulta-estudiante" required>
-
-            </select>
-            <button type="submit">Consultar</button>
-          </form>
-           <br>
-          <button id="consultar-todas" class="btn">Consultar todas</button>
+            <form id="form-consultar-estudiante">
+                <label for="consulta-estudiante">Consultar cursos por estudiante:</label>
+                <select id="consulta-estudiante" name="consulta-estudiante" required>
+                </select>
+                <button type="submit">Consultar</button>
+            </form>
+            <br>
+            <button id="consultar-todas" class="btn">Consultar todas</button>
         
-          <h2>LISTA DE INSCRIPCIONES</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>CURSO</th>
-                <th>ESTUDIANTE</th>
-                <th>NOTA</th>
-                <th>ACCIONES</th>
-              </tr>
-            </thead>
-            <tbody id="tabla-inscripciones">
-
-            </tbody>
-          </table>
+            <h2>LISTA DE INSCRIPCIONES</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CURSO</th>
+                        <th>ESTUDIANTE</th>
+                        <th>NOTA</th>
+                        <th>ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-inscripciones">
+                </tbody>
+            </table>
         </section>
     </div>
 
-  <section id="modal-modificar-nota" class="modal">
-      <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2>Modificar Nota</h2>
-          <form id="form-modificar-nota" novalidate>
-              <input type="hidden" id="modificar-inscripcion-id">
-              <label for="modificar-nota">Nota:</label>
-              <input type="number" id="modificar-nota" step="0.01" min="0" max="10" required>
-              <br>
-              <button type="submit">Guardar cambios</button>
+    <section id="modal-modificar-nota" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Modificar Nota</h2>
+            <form id="form-modificar-nota" novalidate>
+                <input type="hidden" id="modificar-inscripcion-id">
+                <div class="form-group">
+                    <label for="modificar-nota">Nota:</label>
+                    <input type="number" id="modificar-nota" step="0.01" min="0" max="10" required>
+                </div>
+                <button type="submit">Guardar Cambios</button>
             </form>
-      </div>
-  </section>
+        </div>
+    </section>
 
+    <div id="modal-alert" class="modal">
+        <div class="modal-content">
+            <span class="close-alert">&times;</span>
+            <h2 id="alert-title"></h2>
+            <p id="alert-text"></p>
+            <button id="alert-button">Aceptar</button>
+        </div>
+    </div>
 
     <footer>
         <p>Universidad</p>
     </footer>
 
-    <script src="../JavaScript/incripciones.js"></script>
+    <script src="../JavaScript/inscripcion.js"></script>
 </body>
 </html>

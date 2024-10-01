@@ -136,6 +136,12 @@ tr:nth-child(even) {
     margin: 0 5px;
     padding: 8px 12px;
     font-size: 14px;
+    background-color: #2196F3; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .tabla-accion .btn-modificar {
@@ -153,7 +159,6 @@ tr:nth-child(even) {
 .tabla-accion .btn-eliminar:hover {
     background-color: #da190b;
 }
-
 
 .modal {
     display: none;
@@ -195,11 +200,43 @@ tr:nth-child(even) {
     text-decoration: none;
 }
 
+.close-alert {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-alert:hover,
+.close-alert:focus {
+    color: black;
+    text-decoration: none;
+}
+
+#alert-button {
+    background-color: #4CAF50; 
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-top: 20px; 
+}
+
+#alert-button:hover {
+    background-color: #45a049;
+}
+
+
 footer {
     background-color: #444;
     color: white;
     text-align: center;
-    height: 10;
     padding: 5px 0;
     position: fixed;
     bottom: 0;

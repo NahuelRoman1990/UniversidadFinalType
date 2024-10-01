@@ -58,17 +58,6 @@ section {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.agregarEstudiante {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.agregarEstudiante h2 {
-    margin-bottom: 20px;
-    color: #333;
-}
-
 .form-group {
     display: flex;
     flex-direction: column;
@@ -83,7 +72,8 @@ section {
     color: #555;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -104,11 +94,6 @@ button {
 button[type="submit"]:hover,
 button:hover {
     background-color: #45a049;
-}
-
-.tablaEstudiante h2 {
-    margin-bottom: 20px;
-    color: #333;
 }
 
 table {
@@ -136,10 +121,15 @@ tr:nth-child(even) {
     margin: 0 5px;
     padding: 8px 12px;
     font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
 }
 
 .tabla-accion .btn-modificar {
     background-color: #2196F3;
+    color: white;
 }
 
 .tabla-accion .btn-modificar:hover {
@@ -148,6 +138,7 @@ tr:nth-child(even) {
 
 .tabla-accion .btn-eliminar {
     background-color: #f44336;
+    color: white;
 }
 
 .tabla-accion .btn-eliminar:hover {
@@ -178,7 +169,8 @@ tr:nth-child(even) {
     position: relative;
 }
 
-.close {
+.close,
+.close-alert {
     color: #aaa;
     position: absolute;
     top: 15px;
@@ -189,7 +181,9 @@ tr:nth-child(even) {
 }
 
 .close:hover,
-.close:focus {
+.close:focus,
+.close-alert:hover,
+.close-alert:focus {
     color: black;
     text-decoration: none;
 }
@@ -202,26 +196,6 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-}
-
-.modal-alert .modal-content {
-    padding: 20px;
-}
-
-.close-alert {
-    color: #aaa;
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close-alert:hover,
-.close-alert:focus {
-    color: black;
-    text-decoration: none;
 }
 
 @media screen and (max-width: 600px) {
