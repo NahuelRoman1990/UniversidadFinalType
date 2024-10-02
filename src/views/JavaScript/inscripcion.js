@@ -58,8 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    const botonConsultarTodas = document.getElementById("consultar-todas");
-    botonConsultarTodas.addEventListener("click", obtenerInscripciones);
+    // Eliminar el manejador del botón "Consultar todas"
+    // const botonConsultarTodas = document.getElementById("consultar-todas");
+    // botonConsultarTodas.addEventListener("click", obtenerInscripciones);
 
     document
         .getElementById("form-consultar-curso")
@@ -82,6 +83,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#modal-modificar-nota .close").addEventListener("click", () => {
         document.getElementById("modal-modificar-nota").style.display = "none";
     });
+
+    // Cargar todas las inscripciones al cargar la página
+    obtenerInscripciones();
 });
 
 function validarInscripcion(estudiante_id, curso_id, nota) {

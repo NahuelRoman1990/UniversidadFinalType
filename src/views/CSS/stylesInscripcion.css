@@ -63,7 +63,6 @@ section {
     flex-direction: column;
     margin-bottom: 15px;
     width: 100%;
-    max-width: 400px;
 }
 
 .form-group label {
@@ -144,6 +143,30 @@ tr:nth-child(even) {
 .tabla-accion .btn-eliminar:hover {
     background-color: #da190b;
 }
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra todos los elementos hijos (label, select, input) */
+    margin-bottom: 15px;
+    width: 100%; /* Mantiene el ancho completo */
+}
+
+label {
+    text-align: center; /* Centra el texto dentro del label */
+    margin-bottom: 5px; /* Espacio entre el label y el input/select */
+}
+
+input[type="number"],
+select {
+    width: 100%; /* Mantiene el ancho completo */
+    max-width: 300px; /* O puedes ajustar esto como prefieras */
+    padding: 10px; /* Mantiene el estilo de padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Asegura que el padding no aumente el ancho total */
+}
+
 
 .modal {
     display: none;

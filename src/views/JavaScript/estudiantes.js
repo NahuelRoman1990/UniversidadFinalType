@@ -38,7 +38,7 @@ document.querySelector(".close-alert").onclick = function () {
 
 function validarEstudiante(dni, nombre, apellido, email) {
     const dniVal = /^\d{8,8}$/; // Solo números, 8 dígitos
-    const nombreApellidoVal = /^[a-zA-Z\s]{3,50}$/;
+    const nombreApellidoVal = /^[a-zA-ZñÑ\s]{3,50}$/;
     const emailVal = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!dni || !nombre || !apellido || !email) {

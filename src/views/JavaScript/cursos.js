@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function validarCurso(nombre, descripcion, profesor_id) {
-  const nombreVal = /^[a-zA-Z0-9\s]{3,50}$/;
+  const nombreApellidoVal = /^[a-zA-ZñÑ\s]{3,50}$/;
   const descripcionVal = /^.{5,200}$/;
   const profesor_idVal = /^\d+$/;
 
